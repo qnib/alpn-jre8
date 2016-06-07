@@ -8,17 +8,18 @@ ENV JAVA_VERSION_MAJOR=8 \
     JAVA_PACKAGE=server-jre \
     JAVA_HOME=/opt/jdk \
     PATH=${PATH}:/opt/jdk/bin \
-    LANG=C.UTF-8
+    LANG=C.UTF-8 \
+    GLIBC_VER=2.23-r2
 
 # do all in one step
 RUN apk upgrade --update && \
     apk add --update curl ca-certificates bash && \
-    curl -L -o /tmp/glibc-2.21-r2.apk "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
-    apk add --allow-untrusted /tmp/glibc-2.21-r2.apk && \
-    curl -L -o /tmp/glibc-bin-2.21-r2.apk "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
-    apk add --allow-untrusted /tmp/glibc-bin-2.21-r2.apk && \
-    /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
-    curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
+    curl -sLo /tmp/glibc.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk" \
+ && apk add --allow-untrusted /tmp/glibc.apk \
+ && curl -sLo /tmp/glibc-bin.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk" \
+ && apk add --allow-untrusted /tmp/glibc-bin.apk \
+ && ldconfig /lib /usr/glibc/usr/lib \
+ && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
     http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz && \
     gunzip /tmp/java.tar.gz && \
     tar -C /opt -xf /tmp/java.tar && \
