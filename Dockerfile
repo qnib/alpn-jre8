@@ -3,8 +3,8 @@ FROM qnib/alpn-rsyslog
 ## Copied from: https://github.com/anapsix/docker-alpine-java/blob/master/8/jdk/Dockerfile
 # Java Version and other ENV
 ENV JAVA_VERSION_MAJOR=8 \
-    JAVA_VERSION_MINOR=72 \
-    JAVA_VERSION_BUILD=15 \
+    JAVA_VERSION_MINOR=92 \
+    JAVA_VERSION_BUILD=14 \
     JAVA_PACKAGE=server-jre \
     JAVA_HOME=/opt/jdk \
     PATH=${PATH}:/opt/jdk/bin \
