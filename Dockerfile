@@ -1,4 +1,4 @@
-FROM qnib/alpn-rsyslog
+FROM qnib/alpn-consul
 
 ## Copied from: https://github.com/anapsix/docker-alpine-java/blob/master/8/jdk/Dockerfile
 # Java Version and other ENV
